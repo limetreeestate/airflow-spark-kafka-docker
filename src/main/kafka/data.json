@@ -1,0 +1,23 @@
+[
+    {
+        "uid": "123456",
+        "address1": "xyz lane",
+        "city": "Coventry",
+        "postcode": "CV1 5BW",
+        "decision": "A"
+    },
+    {
+        "uid": "223456",
+        "address1": "cde lane",
+        "city": "Birmingham",
+        "postcode": "B4 2FF",
+        "decision": "B"
+    },
+    {
+        "uid": "223456",
+        "address1": "cde lane",
+        "city": "Birmingham",
+        "postcode": "B4 2FF",
+        "decision": "B"
+    }
+]
