@@ -63,6 +63,8 @@ services:
             - SPARK_SSL_ENABLED=no
         ports:
             - '82:8080'
+        volumes:
+            - ./src:/examples/src/
 
     spark-worker:
         image: docker.io/bitnami/spark:3
@@ -96,14 +98,12 @@ services:
     zookeeper:
         image: confluentinc/cp-zookeeper:7.0.0
         hostname: zookeeper
-        container_name: zookeeper
         environment:
             ZOOKEEPER_CLIENT_PORT: 2181
             ZOOKEEPER_TICK_TIME: 2000
 
     kafka:
         image: confluentinc/cp-kafka:7.0.0
-        container_name: kafka
         ports:
             - "9092:9092"
         depends_on:
@@ -112,9 +112,25 @@ services:
             KAFKA_BROKER_ID: 1
             KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:9092
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
             KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
             KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
         volumes:
         - /var/run/docker.sock:/var/run/docker.sock
+
+    # Service to create kafka topic. 
+    kafka-setup:
+        image: confluentinc/cp-kafka:7.0.0
+        hostname: kafka-setup
+        depends_on:
+        - kafka
+        command: "bash -c 'echo Waiting for Kafka to be ready... && \
+                        cub kafka-ready -b kafka:9092 1 20 && \
+                        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic purchases && \
+                        /tmp/dashboard/docker-combined.sh'"
+        environment:
+            # The following settings are listed here only to satisfy the image's requirements.
+            # We override the image's `command` anyways, hence this container will not start a broker.
+            KAFKA_BROKER_ID: ignored
+            KAFKA_ZOOKEEPER_CONNECT: ignored
