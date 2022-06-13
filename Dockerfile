@@ -1,4 +1,4 @@
-FROM apache/airflow
+FROM bitnami/airflow
 
 USER root
 
@@ -17,7 +17,7 @@ RUN apt update && \
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 RUN export JAVA_HOME
 
-USER airflow
+# USER airflow
 
 # Copy source files into container
 WORKDIR /app/src/main
