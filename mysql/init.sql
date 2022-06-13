@@ -20,11 +20,7 @@ CREATE TABLE IF NOT EXISTS stage2 (
 
 CREATE TABLE IF NOT EXISTS duplicates (
     id VARCHAR(100) PRIMARY KEY NOT NULL,
-    address1 VARCHAR(100),
-    city VARCHAR(100),
-    postcode VARCHAR(100),
-    decision VARCHAR(100),
-    dup_count int
+    duplicateCount int
 );
 
 CREATE TABLE IF NOT EXISTS decision (

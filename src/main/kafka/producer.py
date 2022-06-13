@@ -8,8 +8,7 @@ from kafka import KafkaProducer
 
 if __name__ == '__main__':
 
-    KAFKA_BROKER: str = os.environ["KAFKA_BROKER"]
-    KAFKA_TOPIC: str = os.environ["KAFKA_TOPIC"]
+    [KAFKA_BROKER, KAFKA_TOPIC] = argv[1:]
 
     with open("src/main/kafka/data.json", "r") as dataFile:
         data: list = json.loads(dataFile.read())
