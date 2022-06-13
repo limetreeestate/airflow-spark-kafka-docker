@@ -10,8 +10,8 @@ if __name__ == '__main__':
         .appName("Spark table combiner") \
         .getOrCreate()
 
-    [KAFKA_BROKER, MYSQL_URL, MYSQL_DB, MYSQL_UNIQUE_STAGE_TABLE,
-        MYSQL_DECISION_TABLE, MYSQL_USER, MYSQL_PASSWORD] = argv[1:]
+    [KAFKA_BROKER, MYSQL_URL, MYSQL_DB, MYSQL_USER, MYSQL_PASSWORD,
+        MYSQL_UNIQUE_STAGE_TABLE, MYSQL_DECISION_TABLE] = argv[1:]
 
     dbConenction: SparkDBConnection = SparkDBConnection(
         MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD)
