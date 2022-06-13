@@ -1,4 +1,4 @@
-FROM puckel/docker-airflow
+FROM apache/airflow
 
 USER root
 
@@ -28,8 +28,8 @@ COPY airflow-docker/requirements.txt /app
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-# RUN airflow db init
+RUN airflow db init
 
-# RUN airflow connections add 'spark_master_container' --conn-json '{"conn_type": "Spark", "host": "spark://spark","port": 7077}'
+RUN airflow connections add 'spark_master_container' --conn-json '{"conn_type": "Spark", "host": "spark://spark","port": 7077}'
 
-# RUN airflow users  create --role Admin --username nimbus --email $USER_EMAIL --firstname admin --lastname admin --password nimbus
+RUN airflow users  create --role Admin --username nimbus --email $USER_EMAIL --firstname admin --lastname admin --password nimbus

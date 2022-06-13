@@ -1,6 +1,5 @@
 import os
 from sys import argv
-from h11 import Data
 from pyspark.sql import SparkSession, DataFrame
 from main.spark.DataConsumer import DataConsumer
 from main.spark.SparkDBConnection import SparkDBConnection
