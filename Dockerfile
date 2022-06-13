@@ -2,6 +2,8 @@ FROM puckel/docker-airflow
 
 USER root
 
+ARG USER_EMAIL=test@gmail.com
+
 # Create man dir required for java installation
 RUN mkdir -p /usr/share/man/man1
 
@@ -25,3 +27,9 @@ WORKDIR /app
 COPY airflow-docker/requirements.txt /app
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# RUN airflow db init
+
+# RUN airflow connections add 'spark_master_container' --conn-json '{"conn_type": "Spark", "host": "spark://spark","port": 7077}'
+
+# RUN airflow users  create --role Admin --username nimbus --email $USER_EMAIL --firstname admin --lastname admin --password nimbus

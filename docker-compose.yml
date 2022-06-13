@@ -22,23 +22,27 @@ services:
             - kafka
             - phpMyAdmin
         environment:
-            LOAD_EX: n
-            EXECUTOR: Local
-            SPARK_MASTER_URL: spark://spark:7077
-            KAFKA_BROKER: kafka:9092
-            MYSQL_URL: db:2181
-            MYSQL_DB: nimbus
-            MYSQL_RAW_TABLE: stage1
-            MYSQL_UNIQUE_STAGE_TABLE: stage2
-            MYSQL_DUPLICATE_STAGE_TABLE: duplicates
-            MYSQL_USER: root
-            MYSQL_PASSWORD: asd
+            - LOAD_EX=n
+            - EXECUTOR=Local
+            - SPARK_MASTER_URL=spark://spark:7077
+            - KAFKA_BROKER=kafka:9092
+            - MYSQL_URL=db:2181
+            - MYSQL_DB=nimbus
+            - MYSQL_RAW_TABLE=stage1
+            - MYSQL_UNIQUE_STAGE_TABLE=stage2
+            - MYSQL_DUPLICATE_STAGE_TABLE=duplicates
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=asd
+            - AIRFLOW_CONN_SPARK_MASTER_TEST=spark://spark:7077
+            - INSTALL_PROVIDERS_FROM_SOURCES=true
+            - _AIRFLOW_WWW_USER_USERNAME=nimbus
+            - _AIRFLOW_WWW_USER_PASSWORD=nimbus
         logging:
             options:
                 max-size: 10m
                 max-file: "3"
         volumes:
-            - ./airflow-docker/dags:/usr/local/airflow/dags
+            - ./src/main/dags:/usr/local/airflow/dags
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "81:8080"

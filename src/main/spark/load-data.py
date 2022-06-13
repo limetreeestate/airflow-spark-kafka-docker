@@ -1,25 +1,19 @@
 import os
+from sys import argv
 from pyspark.sql import SparkSession, DataFrame
-from main.spark.Consumer import Consumer
+from main.spark.DataConsumer import DataConsumer
 from main.spark.SparkDBConnection import SparkDBConnection
 
 if __name__ == '__main__':
     spark = SparkSession \
         .builder \
-        .appName("Spark streaming Kafka consumer") \
+        .appName("Spark data extractor") \
         .getOrCreate()
-
-    KAFKA_BROKER: str = os.environ["KAFKA_BROKER"]
-    MYSQL_URL: str = os.environ["MYSQL_URL"]
-    MYSQL_DB: str = os.environ["MYSQL_DB"]
-    MYSQL_RAW_TABLE: str = os.environ["MYSQL_RAW_TABLE"]
-    MYSQL_UNIQUE_STAGE_TABLE: str = os.environ["MYSQL_UNIQUE_STAGE_TABLE"]
-    MYSQL_DUPLICATE_STAGE_TABLE: str = os.environ["MYSQL_DUPLICATE_STAGE_TABLE"]
-    MYSQL_USER: str = os.environ["MYSQL_USER"]
-    MYSQL_PASSWORD: str = os.environ["MYSQL_PASSWORD"]
+    
+    [KAFKA_BROKER, MYSQL_URL, MYSQL_DB, MYSQL_RAW_TABLE, MYSQL_UNIQUE_STAGE_TABLE, MYSQL_DUPLICATE_STAGE_TABLE, MYSQL_USER, MYSQL_PASSWORD] = argv[1:]
 
     # Read data from Kafka topic
-    consumer: Consumer = Consumer(spark, KAFKA_BROKER)
+    consumer: DataConsumer = DataConsumer(spark, KAFKA_BROKER)
     rawData: DataFrame = consumer.consumeAll("purchases")
 
     # Save raw data to mysql
@@ -46,5 +40,9 @@ if __name__ == '__main__':
 
     # Write back to mysql
     dbConenction.write(countDuplicates, MYSQL_DB, MYSQL_DUPLICATE_STAGE_TABLE, "overwrite")
+
+    
+    
+    
 
     spark.stop()

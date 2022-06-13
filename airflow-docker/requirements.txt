@@ -1,1 +1,2 @@
 kafka-python
+apache-airflow-providers-apache-spark
